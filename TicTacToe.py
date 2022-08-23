@@ -1,6 +1,7 @@
 
 from random import randint
-# from beautifultable import BeautifulTable
+import math
+import threading
 
 class TicTacToe:
     def __init__(self,n):
@@ -54,7 +55,7 @@ class TicTacToe:
         
         return False
     
-    def checkDraw(board):
+    def checkDraw(self, board):
         '''
         Checks if the game is a draw.
         '''
@@ -63,7 +64,6 @@ class TicTacToe:
                 if tile == ' ':
                     return False
         return True
-    
     
     def printBoard(self):
         '''
@@ -105,7 +105,64 @@ class TicTacToe:
             except ValueError:
                 print('Invalid input, Please enter 2 numbers.\n')
                 continue
+    
+    def computerMove(self):
+        '''
+        Makes the computer's move.
+        '''
+        def minimax(board, depth, alpha, beta, maximizingPlayer):
+            if self.checkForWin(self.computer):
+                return 1
+            elif self.checkForWin(self.player):
+                return -1
+            elif self.checkDraw(board):
+                return 0.5
+            elif depth == 5:
+                return 0
+            elif maximizingPlayer:
+                value = -math.inf
+                for i in range(self.n):
+                    for j in range(self.n):
+                        if board[i][j] == ' ':
+                            board[i][j] = self.computer
+                            value = max(value, minimax(board, depth+1, alpha, beta, False))
+                            board[i][j] = ' '
+                            alpha = max(alpha, value)
+                            if beta <= alpha:
+                                return value
+            else:
+                value = math.inf
+                for i in range(self.n):
+                    for j in range(self.n):
+                        if board[i][j] == ' ':
+                            board[i][j] = self.player
+                            value = min(value, minimax(board, depth+1, alpha, beta, True))
+                            board[i][j] = ' '
+                            beta = min(beta, value)
+                            if beta <= alpha:
+                                return value
+            return value
         
+          
+        bestScore = -1000
+        bestMove = 0
+        for r in range(self.n):
+            for c in range(self.n):
+                if self.board[r][c] == ' ':
+                    self.board[r][c] = self.computer
+                    # score = minimax(self.board, 5, False)
+                    score = minimax(self.board, 0, -1000, 1000, False)
+                    self.board[r][c] = ' '
+                    if score > bestScore:
+                        bestScore = score
+                        bestMove = (r, c)
+                        
+        self.board[bestMove[0]][bestMove[1]] = self.computer
+
+
+
+
+
 
 # testing
         
@@ -118,6 +175,8 @@ b.board[2][0] = 'O'
 b.board[2][1] = 'O'
 b.printBoard()
 b.playerMove()
+b.printBoard()
+b.computerMove()
 b.printBoard()
 
 print(b.checkForWin('X'))
