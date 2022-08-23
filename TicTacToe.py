@@ -1,5 +1,4 @@
 
-from math import sqrt
 from random import randint
 # from beautifultable import BeautifulTable
 
@@ -86,15 +85,40 @@ class TicTacToe:
             
             print(st)
         print('\n')
+    
+    def playerMove(self):
+        '''
+        Gets the input from the user.
+        '''
+        while True:
+            try:
+                inp = input(f'Enter your move (2 number from 1 to {self.n}): ')
+                r, c = map(int, inp.split())
+                if r < 1 or r > self.n or c < 1 or c > self.n:
+                    print(f'Invalid input. Number out of range (1-{self.n})\n')
+                    continue
+                if self.board[r-1][c-1] != ' ':
+                    print('Invalid input. Tile already taken\n')
+                    continue
+                self.board[r-1][c-1] = self.player
+                break
+            except ValueError:
+                print('Invalid input, Please enter 2 numbers.\n')
+                continue
         
+
+# testing
         
-b = TicTacToe(3)
+b = TicTacToe(4)
+
 b.board[0][0] = 'X'
 b.board[1][1] = 'X'
 b.board[1][2] = 'X'
 b.board[2][0] = 'O'
 b.board[2][1] = 'O'
-b.board[2][2] = 'O'
 b.printBoard()
+b.playerMove()
+b.printBoard()
+
 print(b.checkForWin('X'))
 print(b.checkForWin('O'))
