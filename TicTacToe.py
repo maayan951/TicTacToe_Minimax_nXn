@@ -117,7 +117,7 @@ class TicTacToe:
                 return -1
             elif self.checkDraw(board):
                 return 0.5
-            elif depth == 5:
+            elif depth == 8:
                 return 0
             elif maximizingPlayer:
                 value = -math.inf
@@ -159,6 +159,34 @@ class TicTacToe:
                         
         self.board[bestMove[0]][bestMove[1]] = self.computer
 
+    def play(self):
+        '''
+        Plays the game.
+        '''
+        while self.winner is None and self.draw is False:
+            if self.currentPlayer == 1:
+                self.playerMove()
+            else:
+                self.computerMove()
+            
+            self.printBoard()
+                
+            if self.checkForWin(self.player):
+                self.winner = self.player
+                continue
+            elif self.checkForWin(self.computer):
+                self.winner = self.computer
+                continue
+            elif self.checkDraw(self.board):
+                self.draw = True
+                break
+            
+            self.currentPlayer = 1 - self.currentPlayer
+        
+        if self.winner != None:
+            print(f'{self.winner} wins!')
+        elif self.draw:
+            print('\nIt\'s a Draw!')
 
 
 
@@ -166,18 +194,6 @@ class TicTacToe:
 
 # testing
         
-b = TicTacToe(4)
+b = TicTacToe(3)
 
-b.board[0][0] = 'X'
-b.board[1][1] = 'X'
-b.board[1][2] = 'X'
-b.board[2][0] = 'O'
-b.board[2][1] = 'O'
-b.printBoard()
-b.playerMove()
-b.printBoard()
-b.computerMove()
-b.printBoard()
-
-print(b.checkForWin('X'))
-print(b.checkForWin('O'))
+b.play()
