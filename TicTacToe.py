@@ -1,13 +1,21 @@
 
 from math import sqrt
 from random import randint
-from beautifultable import BeautifulTable
+# from beautifultable import BeautifulTable
 
 class TicTacToe:
     def __init__(self,n):
         self.n = n
-        self.board = [f' {i+1} ' for i in range(n**2)]
-
+        self.board = [[' ' for j in range(n)] for i in range(n)]
+        self.__randomizeStartingPlayer()
+        self.printBoard()
+        self.winner = None
+        self.draw = False
+    
+    def __randomizeStartingPlayer(self):
+        '''
+        Randomly chooses who starts the game.
+        '''
         self.currentPlayer = randint(0,1)
         if self.currentPlayer == 1:
             print('You are X, you go first.\n')
@@ -17,34 +25,76 @@ class TicTacToe:
             print('You are O, you go second.\n')
             self.player = 'O'
             self.computer = 'X'
+    
+    def __checkRange(self, lst: list, mark: str):
+        '''
+        Checks if the given list contains only the same element.
+        '''
+        for m in lst:
+            if m != mark:
+                return False
+        return True
+    
+    def checkForWin(self, mark: str):
+        '''
+        Checks if the given mark has won the game.
+        '''
+        for i in range(self.n):
+            # Check rows
+            if self.__checkRange(self.board[i], mark):
+                return True
+            # Check columns
+            if self.__checkRange([self.board[j][i] for j in range(self.n)], mark):
+                return True
             
-        self.printBoard()
-        self.gameOver = False
-        self.winner = None
-        self.draw = False
-        self.turn = 0
-        self.move = 0
-        self.bestMove = 0
-        self.bestScore = -1000
+        # Check diagonals
+        if self.__checkRange([self.board[i][i] for i in range(self.n)], mark):
+            return True
+        if self.__checkRange([self.board[i][self.n-1-i] for i in range(self.n)], mark):
+            return True
+        
+        return False
+    
+    def checkDraw(board):
+        '''
+        Checks if the game is a draw.
+        '''
+        for line in board:
+            for tile in line:
+                if tile == ' ':
+                    return False
+        return True
+    
     
     def printBoard(self):
         '''
-    Prints the board in a nXn grid.
-    '''
-        table = BeautifulTable()
-        for i in range(self.n):
-            table.append_row(self.board[i*self.n:(i+1)*self.n])
-        print(table)
-    
-    def printBoard1(self):
+        Prints the board in a nXn grid.
         '''
-    Prints the board in a nXn grid.
-    '''
+        st = '   '
         for i in range(self.n):
-            print('\t |\t'.join(self.board[i*self.n:(i+1)*self.n]))
-            if (i != self.n - 1):
-                print('-'*(self.n*(self.n)*2))
-
+            st += ' ' + str(i+1) + '  '
+        st += '\n'
+        print(st)
+        for i in range(self.n):
+            st = f'{str(i+1)}   '
+            for j in range(self.n):
+                st += self.board[i][j]
+                if j != self.n-1:
+                    st += ' | '
+            if (i < self.n - 1):
+                st += '\n   ' + '-'*(self.n*3 + self.n - 1)
+            
+            print(st)
+        print('\n')
         
         
 b = TicTacToe(3)
+b.board[0][0] = 'X'
+b.board[1][1] = 'X'
+b.board[1][2] = 'X'
+b.board[2][0] = 'O'
+b.board[2][1] = 'O'
+b.board[2][2] = 'O'
+b.printBoard()
+print(b.checkForWin('X'))
+print(b.checkForWin('O'))
