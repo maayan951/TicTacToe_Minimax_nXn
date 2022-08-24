@@ -11,22 +11,36 @@ def main():
     return jsonify(res)
 
 def game(b):
+    
+    if 'name' in b and 'n' in b:
+        try:
+            d = None
+            with open("./client games/" + b['name'] + '.pkl', 'rb') as file:
+                g = pickle.load(file)
+                d = pickle.load(file)
+            if len(d['board']) == b['n']:
+                return d
+        except FileNotFoundError:
+            pass
+    
     if 'n' in b:
         n = b['n']
         name = b['name']
         ttt = TicTacToe(n)
-        # pickling the model to file
-        with open("./client games/" + name + '.pkl', 'wb') as file:
-            pickle.dump(ttt, file)
+
         d = dict()
         d["currentPlayer"] = ttt.currentPlayer
         d["board"] = ttt.board
         d["winner"] = ttt.winner
         d["draw"] = ttt.draw
         d["name"] = name
+        
+        with open("./client games/" + name + '.pkl', 'wb') as file:
+            pickle.dump(ttt, file)
+            pickle.dump(d, file)
         return d
     
-    with open("./client games/" + name + '.pkl', 'rb') as file:
+    with open("./client games/" + b['name'] + '.pkl', 'rb') as file:
         g = pickle.load(file)
     
     g.board = b['board']
@@ -46,16 +60,17 @@ def game(b):
         g.draw = True
         
     g.currentPlayer = 1 - g.currentPlayer
-
-    with open("./client games/" + name + '.pkl', 'wb') as file:
-        pickle.dump(g, file)
     
-    b = dict()
+
+    # b = dict()
     b["currentPlayer"] = g.currentPlayer
     b["board"] = g.board
     b["winner"] = g.winner
     b["draw"] = g.draw
-    b["name"] = name
+
+    with open("./client games/" + b['name'] + '.pkl', 'wb') as file:
+        pickle.dump(g, file)
+        pickle.dump(b, file)
     
     return b
 
