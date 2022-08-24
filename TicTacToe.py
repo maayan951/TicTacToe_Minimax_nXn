@@ -4,11 +4,11 @@ import math
 import threading
 
 class TicTacToe:
-    def __init__(self,n):
+    def __init__(self,n:int=5):
         self.n = n
         self.board = [[' ' for j in range(n)] for i in range(n)]
         self.__randomizeStartingPlayer()
-        self.printBoard()
+        # self.printBoard()
         self.winner = None
         self.draw = False
     
@@ -65,47 +65,6 @@ class TicTacToe:
                     return False
         return True
     
-    def printBoard(self):
-        '''
-        Prints the board in a nXn grid.
-        '''
-        st = '   '
-        for i in range(self.n):
-            st += ' ' + str(i+1) + '  '
-        st += '\n'
-        print(st)
-        for i in range(self.n):
-            st = f'{str(i+1)}   '
-            for j in range(self.n):
-                st += self.board[i][j]
-                if j != self.n-1:
-                    st += ' | '
-            if (i < self.n - 1):
-                st += '\n   ' + '-'*(self.n*3 + self.n - 1)
-            
-            print(st)
-        print('\n')
-    
-    def playerMove(self):
-        '''
-        Gets the input from the user.
-        '''
-        while True:
-            try:
-                inp = input(f'Enter your move (2 number from 1 to {self.n}): ')
-                r, c = map(int, inp.split())
-                if r < 1 or r > self.n or c < 1 or c > self.n:
-                    print(f'Invalid input. Number out of range (1-{self.n})\n')
-                    continue
-                if self.board[r-1][c-1] != ' ':
-                    print('Invalid input. Tile already taken\n')
-                    continue
-                self.board[r-1][c-1] = self.player
-                break
-            except ValueError:
-                print('Invalid input, Please enter 2 numbers.\n')
-                continue
-    
     def computerMove(self):
         '''
         Makes the computer's move.
@@ -117,7 +76,7 @@ class TicTacToe:
                 return -1
             elif self.checkDraw(board):
                 return 0.5
-            elif depth == 8:
+            elif depth == 5:
                 return 0
             elif maximizingPlayer:
                 value = -math.inf
@@ -150,7 +109,6 @@ class TicTacToe:
             for c in range(self.n):
                 if self.board[r][c] == ' ':
                     self.board[r][c] = self.computer
-                    # score = minimax(self.board, 5, False)
                     score = minimax(self.board, 0, -1000, 1000, False)
                     self.board[r][c] = ' '
                     if score > bestScore:
