@@ -26,10 +26,35 @@ def game(b):
     
     with open('./game' + '.pkl', 'rb') as file:
         g = pickle.load(file)
-        
     
+    g.board = b['board']
+    g.currentPlayer = b['currentPlayer']
+    
+    if g.checkForWin(g.player):
+        g.winner = g.player
+    elif g.checkDraw(g.board):
+        g.draw = True
+    else:   
+        g.computerMove()
+    
+
+    if g.checkForWin(g.computer):
+        g.winner = g.computer
+    elif g.checkDraw(g.board):
+        g.draw = True
         
-    pass
+    g.currentPlayer = 1 - g.currentPlayer
+
+    with open("./game" + '.pkl', 'wb') as file:
+        pickle.dump(g, file)
+    
+    b = dict()
+    b["currentPlayer"] = g.currentPlayer
+    b["board"] = g.board
+    b["winner"] = g.winner
+    b["draw"] = g.draw
+    
+    return b
 
 if __name__ == '__main__':
     app.run()
