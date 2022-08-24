@@ -13,18 +13,20 @@ def main():
 def game(b):
     if 'n' in b:
         n = b['n']
+        name = b['name']
         ttt = TicTacToe(n)
         # pickling the model to file
-        with open("./game" + '.pkl', 'wb') as file:
+        with open("./client games/" + name + '.pkl', 'wb') as file:
             pickle.dump(ttt, file)
         d = dict()
         d["currentPlayer"] = ttt.currentPlayer
         d["board"] = ttt.board
         d["winner"] = ttt.winner
         d["draw"] = ttt.draw
+        d["name"] = name
         return d
     
-    with open('./game' + '.pkl', 'rb') as file:
+    with open("./client games/" + name + '.pkl', 'rb') as file:
         g = pickle.load(file)
     
     g.board = b['board']
@@ -45,7 +47,7 @@ def game(b):
         
     g.currentPlayer = 1 - g.currentPlayer
 
-    with open("./game" + '.pkl', 'wb') as file:
+    with open("./client games/" + name + '.pkl', 'wb') as file:
         pickle.dump(g, file)
     
     b = dict()
@@ -53,6 +55,7 @@ def game(b):
     b["board"] = g.board
     b["winner"] = g.winner
     b["draw"] = g.draw
+    b["name"] = name
     
     return b
 

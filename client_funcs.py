@@ -58,7 +58,7 @@ def playerMove(board, n, player):
 
 
 
-def startGame(address):
+def startGame(address, name):
     n=None
     while True:
         try:
@@ -71,7 +71,7 @@ def startGame(address):
             print("Invalid input. Please enter an integer.")
             continue
 
-    d = {'n': n}
+    d = {'n': n, 'name': name}
     response = requests.post(address, json=d)
     g=json.loads(response.text)
 
