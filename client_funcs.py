@@ -65,9 +65,9 @@ def startGame(address, name):
     n=None
     while True:
         try:
-            n = int(input("Enter the size of the board(2<n<7): "))
-            if n < 3 or n > 6:
-                print("Invalid input. Number out of range (3-6)")
+            n = int(input("Enter the size of the board(n-> 3-5): "))
+            if n < 3 or n > 5:
+                print("Invalid input. Number out of range (3-5)")
                 continue
             break
         except ValueError:
