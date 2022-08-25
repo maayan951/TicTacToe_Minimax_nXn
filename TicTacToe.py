@@ -1,16 +1,15 @@
 
 from random import randint
 import math
-import threading
 
 class TicTacToe:
     def __init__(self,n:int=5):
         self.n = n
         self.board = [[' ' for j in range(n)] for i in range(n)]
         self.__randomizeStartingPlayer()
-        # self.printBoard()
         self.winner = None
         self.draw = False
+    
     
     def __randomizeStartingPlayer(self):
         '''
@@ -26,6 +25,7 @@ class TicTacToe:
             self.player = 'O'
             self.computer = 'X'
     
+    
     def __checkRange(self, lst: list, mark: str):
         '''
         Checks if the given list contains only the same element.
@@ -34,6 +34,7 @@ class TicTacToe:
             if m != mark:
                 return False
         return True
+    
     
     def checkForWin(self, mark: str):
         '''
@@ -55,7 +56,8 @@ class TicTacToe:
         
         return False
     
-    def checkDraw(self, board):
+    
+    def checkDraw(self, board: list[list]):
         '''
         Checks if the game is a draw.
         '''
@@ -64,6 +66,7 @@ class TicTacToe:
                 if tile == ' ':
                     return False
         return True
+    
     
     def heuristic(self):
         '''
@@ -100,8 +103,8 @@ class TicTacToe:
             score += Heuristic_Array[p][c]
             
         return score
-    
-    
+
+
     def computerMove(self):
         '''
         Makes the computer's move.
@@ -156,39 +159,3 @@ class TicTacToe:
                         
         self.board[bestMove[0]][bestMove[1]] = self.computer
 
-    def play(self):
-        '''
-        Plays the game.
-        '''
-        while self.winner is None and self.draw is False:
-            if self.currentPlayer == 1:
-                self.playerMove()
-            else:
-                self.computerMove()
-            
-            self.printBoard()
-                
-            if self.checkForWin(self.player):
-                self.winner = self.player
-                continue
-            elif self.checkForWin(self.computer):
-                self.winner = self.computer
-                continue
-            elif self.checkDraw(self.board):
-                self.draw = True
-                break
-            
-            self.currentPlayer = 1 - self.currentPlayer
-        
-        if self.winner != None:
-            print(f'{self.winner} wins!')
-        elif self.draw:
-            print('\nIt\'s a Draw!')
-
-
-
-# # testing
-        
-# b = TicTacToe(3)
-
-# b.play()

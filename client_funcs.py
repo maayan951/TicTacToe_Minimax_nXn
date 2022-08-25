@@ -4,10 +4,14 @@ import os
 
 
 def clearConsole():
+    '''
+    Clear the console
+    '''
     command = 'clear'
     if os.name in ('nt', 'dos'):  # If Machine is running on Windows, use cls
         command = 'cls'
     os.system(command)
+
 
 def printBoard(board, n):
     '''
@@ -29,7 +33,6 @@ def printBoard(board, n):
         
         print(st)
     print('\n')
-
 
 
 def playerMove(board, n, player):
@@ -54,11 +57,11 @@ def playerMove(board, n, player):
     return board
 
 
-
-
-
-
 def startGame(address, name):
+    '''
+    Starts a new game.
+    '''
+    
     n=None
     while True:
         try:
@@ -75,13 +78,11 @@ def startGame(address, name):
     response = requests.post(address, json=d)
     g=json.loads(response.text)
 
-    player = None
-    if g["currentPlayer"] == 1:
+    player = g["player"]
+    if player == 'X':
         print("You are X, you go first")
-        player = "X"
     else:
         print("You are O, you go second.")
-        player = "O"
 
     print("\n")
     printBoard(g["board"], n)
@@ -104,6 +105,3 @@ def startGame(address, name):
     else:
         print(f"{g['winner']} wins!")
             
-
-
-

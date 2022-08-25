@@ -2,7 +2,8 @@ from client_funcs import *
 
 address = "http://127.0.0.1:5000/"
 
-
+clearConsole()
+# Get name
 while True:
     try:
         name = input("Enter your name: ")
@@ -14,6 +15,8 @@ while True:
         print("Invalid input. Please enter a string.")
         continue
 
+
+# Mini menu
 while True:
     try:
         ans = input("Enter 'n' for new game, 'q' to quit: ")
