@@ -1,6 +1,11 @@
 from client_funcs import *
 
-address = "http://127.0.0.1:5000/"
+# address = "http://127.0.0.1:5000/"
+address = "http://10.0.1.97:5000/"  # This is the address of the local server(IPv4 Address)
+
+# To find the IPv4 address of the local server, run the following command in the terminal:
+## Windows powershell/command prompt: ipconfig
+## Linux terminal: ifconfig
 
 clearConsole()
 # Get name
